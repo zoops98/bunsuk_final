@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZoopsBooks 지문 완전분석</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ZoopsBooks 지문 완전분석 — Design System
+   컨셉: "선생님이 직접 첨삭한 분석지"
+   - 종이(paper) 위에 형광펜(highlighter) / 빨간펜(red pen) / 파란펜(blue pen)
+   - 영어 원문: Serif (모의고사 지문 느낌) / 한글 분석: Pretendard
+   ============================================================ */
+:root{
+  --paper:#FDFCF8;
+  --card:#FFFFFF;
+  --ink:#17233B;          /* 본문 잉크(딥 네이비) */
+  --ink-soft:#4A5568;
+  --ink-faint:#8A93A6;
+  --line:#E4E2D9;
+  --hl:#FFE163;           /* 형광펜 노랑 */
+  --hl-soft:#FFF3B8;
+  --red:#D93B2B;          /* 빨간펜 = 출제포인트 */
+  --red-soft:#FCEAE7;
+  --blue:#2B5CC4;         /* 파란펜 = 어법/구문 */
+  --blue-soft:#EAF0FC;
+  --green:#2F8F5B;        /* 어휘 */
+  --green-soft:#E8F4ED;
+  --serif:'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans:'Pretendard Variable', Pretendard, -apple-system, sans-serif;
+  --radius:10px;
+  --shadow:0 1px 3px rgba(23,35,59,.06), 0 4px 16px rgba(23,35,59,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+
+/* ---------- 헤더 ---------- */
+header.app{position:sticky;top:0;z-index:50;background:rgba(253,252,248,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.app-inner{max-width:980px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px}
+.logo{display:flex;align-items:baseline;gap:8px;font-weight:800;font-size:18px;letter-spacing:-.02em}
+.logo .zb{color:var(--red)}
+.logo .sub{font-size:12.5px;font-weight:600;color:var(--ink-faint);letter-spacing:.02em}
+.spacer{flex:1}
+.btn{font-family:var(--sans);font-size:13.5px;font-weight:700;padding:8px 16px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--ink-faint);transform:translateY(-1px)}
+.btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.primary:hover{background:#243352}
+.btn.primary:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-soft)}
+.key-dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.key-dot.ok{background:var(--green)}
+
+/* ---------- 입력 영역 ---------- */
+main{max-width:980px;margin:0 auto;padding:36px 24px 100px}
+.hero{margin-bottom:28px}
+.hero h1{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.3}
+.hero h1 .mark{background:linear-gradient(transparent 55%, var(--hl) 55%, var(--hl) 92%, transparent 92%);padding:0 3px}
+.hero p{margin-top:8px;color:var(--ink-soft);font-size:15px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tab{flex:1;padding:13px;text-align:center;font-size:14px;font-weight:700;color:var(--ink-faint);cursor:pointer;background:none;border:none;border-bottom:2.5px solid transparent;font-family:var(--sans);transition:.15s}
+.tab.active{color:var(--ink);border-bottom-color:var(--red)}
+.tab:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.tabbody{padding:22px}
+textarea#txtInput{width:100%;min-height:220px;border:1.5px solid var(--line);border-radius:8px;padding:16px;font-family:var(--serif);font-size:15.5px;line-height:1.8;color:var(--ink);resize:vertical;background:#FFFFFE}
+textarea#txtInput:focus{outline:none;border-color:var(--blue)}
+.drop{border:2px dashed var(--line);border-radius:8px;padding:44px 20px;text-align:center;cursor:pointer;transition:.15s;color:var(--ink-soft)}
+.drop:hover,.drop.over{border-color:var(--blue);background:var(--blue-soft)}
+.drop .big{font-size:15.5px;font-weight:700;color:var(--ink)}
+.drop .small{font-size:13px;margin-top:6px;color:var(--ink-faint)}
+.filelist{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.filechip{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--paper);border:1px solid var(--line);border-radius:8px;font-size:13.5px}
+.filechip .name{font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.filechip .rm{border:none;background:none;color:var(--red);font-weight:800;cursor:pointer;font-size:15px;padding:2px 6px}
+.extracted{margin-top:16px}
+.extracted label{font-size:13px;font-weight:700;color:var(--blue);display:block;margin-bottom:6px}
+.controls{display:flex;align-items:center;gap:12px;padding:18px 22px;border-top:1px solid var(--line);background:#FBFAF5;flex-wrap:wrap}
+.lvl{display:flex;gap:6px;flex-wrap:wrap}
+.lvl button{font-family:var(--sans);font-size:13px;font-weight:700;padding:7px 14px;border-radius:20px;border:1.5px solid var(--line);background:var(--card);color:var(--ink-soft);cursor:pointer;transition:.15s}
+.lvl button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.lvl.sub button{font-size:12px;padding:4.5px 11px}
+.lvl.sub button.on{background:var(--red);border-color:var(--red)}
+.hint{font-size:12.5px;color:var(--ink-faint)}
+
+/* ---------- 프리뷰 편집 · 레이아웃 조절 ---------- */
+.layoutbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:10px 14px;margin-bottom:18px;box-shadow:var(--shadow)}
+.layoutbar .lbl{font-size:12px;font-weight:800;color:var(--ink-faint);letter-spacing:.03em;margin-right:2px}
+.layoutbar .sep{width:1px;height:20px;background:var(--line);margin:0 6px}
+.mini{font-family:var(--sans);font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:6px;border:1.5px solid var(--line);background:var(--card);color:var(--ink-soft);cursor:pointer;transition:.15s}
+.mini:hover{border-color:var(--ink-faint)}
+.mini.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.mini:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#fsVal{font-size:12px;font-weight:800;min-width:38px;text-align:center;color:var(--ink)}
+.secchips{display:flex;gap:5px;flex-wrap:wrap}
+.secchips .mini.off{opacity:.4;text-decoration:line-through}
+.doc.editing{outline:2.5px dashed var(--blue);outline-offset:8px;cursor:text}
+.doc.editing [contenteditable]{caret-color:var(--red)}
+.sec.hidden{display:none !important}
+.doc.compact{padding:32px 38px}
+.doc.compact .sec{margin-top:24px}
+.doc.compact .doc-head{margin-bottom:18px;padding-bottom:12px}
+.doc.compact .passage{line-height:1.75;padding:16px 20px;font-size:15px}
+.doc.compact .sent{margin-bottom:7px}
+.doc.compact .sent-top{padding:9px 13px}
+.doc.compact .sent-body{padding:8px 13px 9px 50px;gap:3px;font-size:13.5px}
+.doc.compact table.voca td{padding:5.5px 9px}
+.doc.compact table.voca th{padding:6px 9px}
+.doc.compact .gram{padding:9px 13px;margin-bottom:7px}
+.doc.compact .exam-block{margin-bottom:9px}
+.doc.compact .exam-block .inner{padding:9px 13px;gap:6px}
+.doc.compact .exam-block>h4{padding:5px 13px}
+.doc.compact .desc-q{padding:9px 13px;margin-bottom:6px}
+.doc.compact .grid-info>div{padding:7px 11px}
+.doc.compact .flow-item{padding:8px 4px}
+.doc.compact .summary-box{padding:13px 17px;line-height:1.8}
+.doc.compact .bg-box{padding:12px 16px}
+
+/* ---------- 로딩 ---------- */
+#loading{position:fixed;inset:0;background:rgba(253,252,248,.94);z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px}
+#loading.show{display:flex}
+.pen{width:56px;height:56px;border:4px solid var(--line);border-top-color:var(--red);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loadMsg{font-size:15px;font-weight:700}
+#loadSub{font-size:13px;color:var(--ink-faint)}
+.steps{display:flex;flex-direction:column;gap:9px;min-width:280px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 22px;box-shadow:var(--shadow)}
+.step{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-faint);font-weight:600}
+.step .ic{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;font-weight:800}
+.step.run{color:var(--ink)}
+.step.run .ic{border-color:var(--blue);color:var(--blue);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.15)}}
+.step.done{color:var(--ink-soft)}
+.step.done .ic{border-color:var(--green);background:var(--green);color:#fff}
+.step.fail .ic{border-color:var(--red);color:var(--red)}
+.step .pct{margin-left:auto;font-size:12px;color:var(--blue);font-weight:800}
+
+/* ---------- 결과: 분석지 문서 ---------- */
+#result{display:none;margin-top:44px}
+.toolbar{position:sticky;top:60px;z-index:40;display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;background:rgba(253,252,248,.95);backdrop-filter:blur(8px);padding:10px 0;border-bottom:1px solid var(--line)}
+.doc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:52px 56px}
+.doc-head{border-bottom:2.5px solid var(--ink);padding-bottom:18px;margin-bottom:30px;display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.doc-head .brand{font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--red)}
+.doc-head h2{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.35;flex:1;min-width:200px}
+.doc-head .meta{font-size:12.5px;color:var(--ink-faint);text-align:right;line-height:1.5}
+
+/* 섹션 제목 = 형광펜 시그니처 */
+.sec{margin-top:44px}
+.sec:first-of-type{margin-top:0}
+.sec > h3{display:inline-block;font-size:18px;font-weight:800;letter-spacing:-.02em;background:linear-gradient(transparent 52%, var(--hl) 52%, var(--hl) 94%, transparent 94%);padding:0 6px 0 2px;margin-bottom:16px}
+.sec > h3 .no{font-family:var(--serif);font-style:italic;font-weight:600;color:var(--red);margin-right:6px}
+.sec.exam > h3{background:linear-gradient(transparent 52%, #FBD0C9 52%, #FBD0C9 94%, transparent 94%)}
+
+/* 한눈에 보기 */
+.grid-info{display:grid;grid-template-columns:110px 1fr;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.grid-info>div{padding:11px 15px;font-size:14px;border-bottom:1px solid var(--line)}
+.grid-info>div:nth-last-child(-n+2){border-bottom:none}
+.grid-info .k{background:var(--paper);font-weight:800;font-size:13px;color:var(--ink-soft)}
+.grid-info .v b{color:var(--red)}
+
+/* 원문 지문 */
+.passage{font-family:var(--serif);font-size:16px;line-height:2.05;border:1px solid var(--line);border-radius:8px;padding:26px 30px;background:#FFFFFE}
+.passage .sn{font-family:var(--sans);font-size:11px;font-weight:800;color:var(--blue);vertical-align:super;margin-right:2px}
+.passage .key{background:var(--hl-soft);box-shadow:0 0 0 1px var(--hl-soft)}
+
+/* 문장별 분석 카드 */
+.sent{border:1px solid var(--line);border-radius:8px;margin-bottom:14px;overflow:hidden;break-inside:avoid}
+.sent-top{display:flex;align-items:flex-start;gap:12px;padding:15px 18px;background:#FFFFFE}
+.sent-no{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.sent-en{font-family:var(--serif);font-size:15.5px;line-height:1.75;flex:1}
+.sent-star{flex-shrink:0;color:var(--red);font-size:13px;font-weight:800;letter-spacing:.05em;margin-top:4px}
+.sent-body{padding:13px 18px 15px 58px;background:var(--paper);border-top:1px dashed var(--line);font-size:14px;display:flex;flex-direction:column;gap:7px}
+.sent-body .row{display:flex;gap:10px;align-items:baseline}
+.sent-body .tag{flex-shrink:0;font-size:11px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:.03em;margin-top:2px}
+.tag.chunk{background:var(--blue-soft);color:var(--blue)}
+.tag.ko{background:#EFEDE4;color:var(--ink-soft)}
+.tag.syn{background:var(--blue-soft);color:var(--blue)}
+.tag.exam{background:var(--red-soft);color:var(--red)}
+.sent-body .chunked{font-family:var(--serif);color:var(--ink-soft)}
+.sent-body .chunked .sl{color:var(--red);font-weight:700;padding:0 2px}
+.note-line{color:var(--ink-soft)}
+.note-line b{color:var(--blue)}
+.exam-line{color:var(--ink);border-bottom:2px solid var(--red);display:inline;padding-bottom:1px}
+
+/* 구조 흐름 */
+.flow{display:flex;flex-direction:column;gap:0}
+.flow-item{display:flex;gap:16px;padding:13px 4px;position:relative}
+.flow-item:not(:last-child)::after{content:'';position:absolute;left:13px;top:44px;bottom:-6px;width:2px;background:var(--line)}
+.flow-dot{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:2.5px solid var(--ink);background:var(--card);color:var(--ink);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:1}
+.flow-item .role{font-weight:800;font-size:14px}
+.flow-item .role .rng{font-size:12px;font-weight:600;color:var(--ink-faint);margin-left:8px}
+.flow-item .desc{font-size:13.5px;color:var(--ink-soft);margin-top:2px}
+.dev-type{display:inline-block;font-size:13px;font-weight:800;background:var(--ink);color:#fff;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+
+/* 어휘 테이블 */
+table.voca{width:100%;border-collapse:collapse;font-size:13.5px}
+table.voca th{background:var(--ink);color:#fff;font-weight:700;padding:9px 12px;text-align:left;font-size:12.5px}
+table.voca td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.voca tr:nth-child(even) td{background:#FBFAF5}
+table.voca .w{font-family:var(--serif);font-weight:700;font-size:14.5px}
+table.voca .syn{color:var(--green);font-size:12.5px}
+table.voca .ant{color:var(--red);font-size:12.5px}
+table.voca .ex{color:var(--ink-faint);font-size:12px}
+
+/* 어법 총정리 */
+.gram{border-left:3.5px solid var(--blue);background:var(--blue-soft);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:12px;break-inside:avoid}
+.gram h4{font-size:14.5px;font-weight:800;color:var(--blue);margin-bottom:5px}
+.gram h4 .ref{font-size:11.5px;font-weight:700;background:var(--blue);color:#fff;border-radius:4px;padding:1px 7px;margin-left:8px;vertical-align:1px}
+.gram p{font-size:13.5px;color:var(--ink-soft)}
+.gram .tf{margin-top:7px;font-size:13px;background:#fff;border-radius:6px;padding:8px 12px;font-family:var(--serif)}
+.gram .tf .lbl{font-family:var(--sans);font-size:11px;font-weight:800;color:var(--red);margin-right:6px}
+
+/* 출제 포인트 */
+.exam-block{border:1.5px solid var(--red);border-radius:8px;overflow:hidden;margin-bottom:16px;break-inside:avoid}
+.exam-block>h4{background:var(--red);color:#fff;font-size:13.5px;font-weight:800;padding:8px 16px;letter-spacing:.02em}
+.exam-block .inner{padding:14px 18px;display:flex;flex-direction:column;gap:11px}
+.exam-item{font-size:13.5px;padding-left:14px;position:relative}
+.exam-item::before{content:'▸';position:absolute;left:0;color:var(--red);font-weight:800}
+.exam-item .t{font-weight:700}
+.exam-item .why{color:var(--ink-soft);display:block;margin-top:2px;font-size:13px}
+.exam-item .en{font-family:var(--serif)}
+.exam-item .wrong{color:var(--red);text-decoration:line-through}
+.exam-item .ans{background:var(--hl-soft);padding:0 4px;font-weight:700}
+
+/* 서술형 */
+.desc-q{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;break-inside:avoid}
+.desc-q .q{font-weight:800;font-size:14px}
+.desc-q .q .qn{color:var(--red);margin-right:6px}
+.desc-q .a{margin-top:8px;font-size:13.5px;font-family:var(--serif);background:#fff;border-radius:6px;padding:9px 13px;border:1px dashed var(--line)}
+.desc-q .a .lbl,.desc-q .g .lbl{font-family:var(--sans);font-size:11px;font-weight:800;color:var(--blue);margin-right:6px}
+.desc-q .g{margin-top:6px;font-size:12.5px;color:var(--ink-soft)}
+
+/* 요약문 */
+.summary-box{border:1px solid var(--line);border-radius:8px;padding:20px 24px;font-family:var(--serif);font-size:15px;line-height:2;background:#FFFFFE}
+.summary-box .blank{display:inline-block;min-width:90px;border-bottom:2px solid var(--ink);text-align:center;font-weight:700;color:transparent;user-select:none;transition:.2s;cursor:pointer;padding:0 6px}
+.summary-box .blank.reveal{color:var(--red)}
+.summary-box .bh{font-family:var(--sans);font-size:11px;color:var(--ink-faint);vertical-align:super;margin-left:2px}
+.summary-tip{font-size:12.5px;color:var(--ink-faint);margin-top:8px}
+
+/* 배경지식 */
+.bg-box{background:var(--green-soft);border-radius:8px;padding:18px 22px;font-size:14px;line-height:1.8}
+.bg-box .rel{margin-top:10px;font-size:13px;color:var(--green);font-weight:700}
+
+.doc-foot{margin-top:52px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:flex-start;font-size:11.5px;color:var(--ink-faint)}
+
+/* ---------- 모달 ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(23,35,59,.4);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:var(--card);border-radius:14px;padding:30px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal h3{font-size:18px;font-weight:800;margin-bottom:6px}
+.modal p{font-size:13.5px;color:var(--ink-soft);margin-bottom:16px}
+.modal p a{color:var(--blue);font-weight:700}
+.modal input{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:11px 14px;font-size:14px;font-family:var(--sans)}
+.modal input:focus{outline:none;border-color:var(--blue)}
+.modal .row{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
+
+/* ---------- 에러 토스트 ---------- */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:13px 22px;border-radius:10px;font-size:14px;font-weight:600;z-index:300;transition:.3s;opacity:0;max-width:90vw}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#toast.err{background:var(--red)}
+
+/* ---------- 인쇄 ---------- */
+@media print{
+  @page{size:A4;margin:14mm 13mm}
+  body{background:#fff}
+  header.app,.hero,.panel,.toolbar,.layoutbar,#loading,.modal-bg,#toast{display:none !important}
+  main{max-width:none;padding:0;margin:0}
+  #result{margin-top:0}
+  .doc{border:none;box-shadow:none;border-radius:0;padding:0}
+  .doc.editing{outline:none}
+  .sec{margin-top:26px}
+  .doc.compact .sec{margin-top:16px}
+  .sent,.gram,.exam-block,.desc-q,.flow-item{break-inside:avoid}
+  .summary-box .blank{color:transparent !important}
+  .summary-box .blank.print-ans{color:var(--red) !important}
+}
+@media (max-width:640px){
+  .doc{padding:28px 20px}
+  .app-inner{padding:12px 16px}
+  main{padding:24px 16px 80px}
+  .grid-info{grid-template-columns:90px 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<header class="app">
+  <div class="app-inner">
+    <div class="logo">Zoops<span class="zb">Books</span><span class="sub">지문 완전분석</span></div>
+    <div class="spacer"></div>
+    <button class="btn" id="keyBtn"><span class="key-dot" id="keyDot"></span>API 키</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>모든 학생들의 지문이해, <span class="mark">완전분석</span>과 함께</h1>
+    <p>지문을 붙여넣거나 PDF·사진을 올리면, 문장 하나까지 전부 분석하고 시험에 나올 부분을 콕 집어드립니다.</p>
+  </div>
+
+  <div class="panel">
+    <div class="tabs" role="tablist">
+      <button class="tab active" id="tabText" role="tab" aria-selected="true">✏️ 텍스트 입력</button>
+      <button class="tab" id="tabFile" role="tab" aria-selected="false">📄 PDF · 사진 업로드</button>
+    </div>
+
+    <div class="tabbody" id="bodyText">
+      <textarea id="txtInput" placeholder="영어 지문을 여기에 붙여넣으세요. (교과서, 모의고사, 부교재 지문 등)"></textarea>
+    </div>
+
+    <div class="tabbody" id="bodyFile" style="display:none">
+      <div class="drop" id="dropZone" tabindex="0" role="button" aria-label="파일 업로드">
+        <div class="big">클릭하거나 파일을 끌어다 놓으세요</div>
+        <div class="small">PDF 1개 또는 지문 사진 여러 장 (JPG · PNG · WEBP, 파일당 15MB 이하)</div>
+      </div>
+      <input type="file" id="fileInput" accept=".pdf,image/jpeg,image/png,image/webp" multiple hidden>
+      <div class="filelist" id="fileList"></div>
+      <div class="extracted" id="extractedWrap" style="display:none">
+        <label>📌 추출된 지문 — 오탈자를 확인·수정한 후 분석하세요 (정확한 분석의 핵심!)</label>
+        <textarea id="txtInput2" style="width:100%;min-height:180px;border:1.5px solid var(--blue);border-radius:8px;padding:16px;font-family:var(--serif);font-size:15px;line-height:1.8"></textarea>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div style="display:flex;flex-direction:column;gap:9px;flex:1;min-width:240px">
+        <div class="lvl" id="lvlGroup">
+          <button data-lvl="중등 내신" class="on">중등 내신</button>
+          <button data-lvl="고등 내신">고등 내신</button>
+          <button data-lvl="수능·모의고사">수능·모의고사</button>
+        </div>
+        <div class="lvl sub" id="lvlSub" aria-label="세부 수준 선택"></div>
+      </div>
+      <span class="hint" id="stepHint"></span>
+      <button class="btn primary" id="extractBtn" style="display:none">1단계 · 지문 추출</button>
+      <button class="btn red" id="analyzeBtn">완전분석 시작 →</button>
+    </div>
+  </div>
+
+  <!-- 결과 -->
+  <div id="result">
+    <div class="toolbar">
+      <button class="btn red" id="dlBtn">📄 HTML 문서로 내보내기</button>
+      <button class="btn primary" onclick="window.print()">🖨️ 바로 인쇄 / PDF</button>
+      <button class="btn" id="ansToggle">👁️ 요약문 정답 보기</button>
+      <button class="btn ghost" id="newBtn">＋ 새 지문 분석</button>
+    </div>
+    <div class="layoutbar">
+      <span class="lbl">프리뷰 편집</span>
+      <button class="mini" id="editToggle">✏️ 글자 수정</button>
+      <span class="sep"></span>
+      <span class="lbl">글자 크기</span>
+      <button class="mini" id="fsDown" aria-label="글자 작게">A−</button>
+      <span id="fsVal">100%</span>
+      <button class="mini" id="fsUp" aria-label="글자 크게">A＋</button>
+      <span class="sep"></span>
+      <button class="mini" id="compactToggle">📎 압축 레이아웃 (종이 절약)</button>
+      <span class="sep"></span>
+      <span class="lbl">섹션 표시</span>
+      <div class="secchips" id="secChips"></div>
+    </div>
+    <div class="doc" id="doc"></div>
+  </div>
+</main>
+
+<!-- 로딩 -->
+<div id="loading">
+  <div class="pen"></div>
+  <div id="loadMsg">분석 준비 중...</div>
+  <div class="steps" id="stepList"></div>
+  <div id="loadSub">여러 분석을 동시에 진행합니다 — 잠시만요</div>
+</div>
+
+<!-- API 키 모달 -->
+<div class="modal-bg" id="keyModal">
+  <div class="modal">
+    <h3>Gemini API 키 설정</h3>
+    <p><a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>에서 무료로 발급받을 수 있습니다. 키는 이 브라우저에만 저장됩니다.</p>
+    <input type="password" id="keyInput" placeholder="AIza로 시작하는 API 키" autocomplete="off">
+    <div class="row">
+      <button class="btn" id="keyCancel">취소</button>
+      <button class="btn primary" id="keySave">저장</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+'use strict';
+/* ============================================================
+   ZoopsBooks 지문 완전분석 v1.0
+   - Gemini 2.5 Flash / 단일 HTML / localStorage API 키
+   - 입력: 텍스트, PDF(1개), 이미지(여러 장)
+   - 2단계 흐름: (파일) 추출 → 확인·수정 → 분석
+   ============================================================ */
+
+const $ = s => document.querySelector(s);
+const MODEL = 'gemini-2.5-flash';
+const KEY_NAME = 'zoops_gemini_key';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+let files = [];          // {name, mime, b64}
+let analysis = null;     // 분석 결과 JSON
+let extractedMode = false;
+
+/* ---------- 수준 선택: 카테고리 + 세부 등급 ---------- */
+const LEVELS = {
+  '중등 내신':    { subs: ['상위권', '중위권', '하위권'], def: '중위권' },
+  '고등 내신':    { subs: ['1등급', '2등급', '3등급', '4등급', '5등급'], def: '3등급' },
+  '수능·모의고사': { subs: ['1등급','2등급','3등급','4등급','5등급','6등급','7등급','8등급','9등급','10등급'], def: '3등급' }
+};
+let levelCat = '중등 내신';
+let levelSub = LEVELS[levelCat].def;
+const levelName = () => `${levelCat} ${levelSub}`;
+
+/* 등급별 분석 지침 — 모든 프롬프트에 주입되어 분석의 깊이·톤·초점을 바꾼다 */
+function levelProfile(){
+  if(levelCat === '중등 내신'){
+    if(levelSub === '상위권') return '최상위권 변별 문제 대비: 심화 구문과 고난도 어법 변형, 함정 선지, 고배점 서술형(조건 영작)까지 파고들 것. 실수 포인트와 감점 요인을 출제자 관점에서 구체적으로 짚을 것.';
+    if(levelSub === '하위권') return '기초를 다지는 분석: 문법 용어는 반드시 쉬운 우리말로 풀어 설명하고(예: "관계대명사" → "앞 단어를 꾸며주는 연결 고리"), 해석과 기본 어휘 암기에 비중을 둘 것. 짧고 명확한 문장, 자신감을 주는 격려 톤. 어려운 심화 내용은 과감히 생략.';
+    return '개념을 정확히 다지는 분석: 학교 시험에 자주 나오는 표준 유형 중심. 학생들이 헷갈리는 포인트는 비교(O/X 예시)로 설명하고, 서술형은 기본~중간 난이도 위주.';
+  }
+  if(levelCat === '고등 내신'){
+    const g = parseInt(levelSub);
+    if(g === 1) return '1등급 만점 방어: 최고난도 어법 변형(수일치·병렬·분사구문 심화), 유사 어휘 미세 뉘앙스 함정, 고배점 조건 서술형(어형 변화+어순 조건)까지 완벽 대비. 출제자가 함정을 설계하는 방식 자체를 해설하고, 상위 4%를 가르는 변별 포인트를 명시할 것.';
+    if(g === 2) return '1등급 도약: 2등급이 자주 틀리는 고난도 포인트(매력적 오답의 소거 논리, 헷갈리는 어법 쌍)에 집중. 실수를 시스템으로 막는 체크리스트형 해설.';
+    if(g === 3) return '표준 유형 정복: 시험에 반드시 나오는 핵심 어법·어휘를 우선순위(빈출도)와 함께 제시. 서술형은 기본 배점 유형 위주로, 부분 점수 확보 전략 포함.';
+    if(g === 4) return '해석력 보강: 문장 구조(주어·동사 찾기)와 직독직해 훈련 비중을 높일 것. 어법은 빈출 기초 5개 이내로 압축하고, 긴 문장은 끊어 읽는 요령을 단계별로.';
+    return '기초 다지기: 모든 설명을 아주 쉬운 우리말로. 각 문장의 주어와 동사를 명확히 표시하고, 지문 줄거리를 이야기처럼 이해시키는 데 집중. 어휘는 필수 기본 단어만, 격려하는 톤으로.';
+  }
+  /* 수능·모의고사 — 문제 풀이 전략 중심 */
+  const g = parseInt(levelSub);
+  if(g === 1) return '초고속 만점 풀이: 지문을 다 읽지 않고도 정답으로 직행하는 시그널(역접 연결사 뒤 주제문, 재진술(paraphrasing) 표현, 통념→반박 구조 신호, 첫·끝 문장 요지, 예시 앞뒤의 일반 진술)을 최우선으로 분석할 것. 각 시그널을 몇 초 안에 포착하는 스캐닝 요령과 오답 선지 순간 소거법을 제시. 시간 단축이 최우선 목표.';
+  if(g <= 3) return '안정적 1등급 진입: 정답 시그널(연결사·재진술·구조 신호) 포착 훈련과 매력적 오답의 함정 패턴(지엽적 일치, 반대 진술, 과잉 일반화) 소거법을 함께 제시. 킬러 문장의 구문 분석 포함.';
+  if(g <= 6) return '유형별 접근법 훈련: 문제 유형(주제·제목·빈칸·순서·삽입)별 단서 문장 찾는 법과 시간 배분 전략을 제시. 단서가 되는 연결사와 지시어를 지문에서 직접 짚어줄 것. 해석이 안 되는 문장은 구조를 단순화해 설명.';
+  return '기초 독해 체력: 쉬운 우리말 해석 중심. 핵심 단어 몇 개로 글의 대의를 잡는 법, 아는 단어로 문장 뜻을 추측하는 법을 훈련. 찍기가 아니라 지문 속 근거를 찾는 습관을 만들어 줄 것. 설명은 짧고 쉽게, 격려하는 톤.';
+}
+
+/* ---------- 토스트 ---------- */
+let toastTimer;
+function toast(msg, isErr = false){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = isErr ? 'show err' : 'show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.className = '', 4000);
+}
+
+/* ---------- API 키 ---------- */
+/* file:// 로 열면 브라우저가 localStorage를 막을 수 있어 안전 래퍼 사용 (세션 메모리로 대체) */
+let memKey = '';
+function getKey(){
+  try{ return localStorage.getItem(KEY_NAME) || memKey || ''; }
+  catch(_){ return memKey || ''; }
+}
+function saveKey(v){
+  memKey = v;
+  try{ localStorage.setItem(KEY_NAME, v); }catch(_){ /* file:// 등에서 실패 시 메모리에만 유지 */ }
+}
+function refreshKeyDot(){
+  $('#keyDot').classList.toggle('ok', !!getKey());
+}
+$('#keyBtn').onclick = () => {
+  $('#keyInput').value = getKey();
+  $('#keyModal').classList.add('show');
+  $('#keyInput').focus();
+};
+$('#keyCancel').onclick = () => $('#keyModal').classList.remove('show');
+$('#keySave').onclick = () => {
+  const v = $('#keyInput').value.trim();
+  if(!v){ toast('API 키를 입력해 주세요', true); return; }
+  saveKey(v);
+  refreshKeyDot();
+  $('#keyModal').classList.remove('show');
+  toast('API 키가 저장되었습니다 ✓');
+};
+$('#keyModal').addEventListener('click', e => { if(e.target === $('#keyModal')) $('#keyModal').classList.remove('show'); });
+refreshKeyDot();
+
+/* ---------- 탭 ---------- */
+function switchTab(isText){
+  $('#tabText').classList.toggle('active', isText);
+  $('#tabFile').classList.toggle('active', !isText);
+  $('#tabText').setAttribute('aria-selected', isText);
+  $('#tabFile').setAttribute('aria-selected', !isText);
+  $('#bodyText').style.display = isText ? '' : 'none';
+  $('#bodyFile').style.display = isText ? 'none' : '';
+  updateControls();
+}
+$('#tabText').onclick = () => switchTab(true);
+$('#tabFile').onclick = () => switchTab(false);
+
+/* ---------- 수준 선택 UI ---------- */
+function renderSubLevels(){
+  $('#lvlSub').innerHTML = LEVELS[levelCat].subs.map(s =>
+    `<button data-sub="${s}" class="${s === levelSub ? 'on' : ''}">${s}</button>`).join('');
+}
+$('#lvlGroup').addEventListener('click', e => {
+  const b = e.target.closest('button[data-lvl]');
+  if(!b) return;
+  levelCat = b.dataset.lvl;
+  levelSub = LEVELS[levelCat].def;
+  document.querySelectorAll('#lvlGroup button').forEach(x => x.classList.toggle('on', x === b));
+  renderSubLevels();
+});
+$('#lvlSub').addEventListener('click', e => {
+  const b = e.target.closest('button[data-sub]');
+  if(!b) return;
+  levelSub = b.dataset.sub;
+  document.querySelectorAll('#lvlSub button').forEach(x => x.classList.toggle('on', x === b));
+});
+renderSubLevels();
+
+/* ---------- 파일 업로드 ---------- */
+const drop = $('#dropZone');
+drop.onclick = () => $('#fileInput').click();
+drop.onkeydown = e => { if(e.key === 'Enter' || e.key === ' ') $('#fileInput').click(); };
+drop.ondragover = e => { e.preventDefault(); drop.classList.add('over'); };
+drop.ondragleave = () => drop.classList.remove('over');
+drop.ondrop = e => { e.preventDefault(); drop.classList.remove('over'); addFiles(e.dataTransfer.files); };
+$('#fileInput').onchange = e => { addFiles(e.target.files); e.target.value = ''; };
+
+async function addFiles(list){
+  for(const f of list){
+    const isPdf = f.type === 'application/pdf' || /\.pdf$/i.test(f.name);
+    const isImg = /^image\/(jpeg|png|webp)$/.test(f.type);
+    if(!isPdf && !isImg){ toast(`지원하지 않는 형식: ${f.name}`, true); continue; }
+    if(f.size > 15 * 1024 * 1024){ toast(`15MB 초과: ${f.name}`, true); continue; }
+    if(isPdf && files.some(x => x.mime === 'application/pdf')){ toast('PDF는 1개만 업로드할 수 있습니다', true); continue; }
+    if(isPdf && files.length > 0){ toast('PDF와 이미지는 함께 업로드할 수 없습니다', true); continue; }
+    if(isImg && files.some(x => x.mime === 'application/pdf')){ toast('PDF와 이미지는 함께 업로드할 수 없습니다', true); continue; }
+    try{
+      const b64 = await fileToB64(f);
+      files.push({ name: f.name, mime: isPdf ? 'application/pdf' : f.type, b64 });
+    }catch{ toast(`파일 읽기 실패: ${f.name}`, true); }
+  }
+  renderFileList();
+  updateControls();
+}
+function fileToB64(file){
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = () => rej(new Error('read fail'));
+    r.readAsDataURL(file);
+  });
+}
+function renderFileList(){
+  $('#fileList').innerHTML = files.map((f, i) =>
+    `<div class="filechip"><span>${f.mime === 'application/pdf' ? '📄' : '🖼️'}</span>
+     <span class="name">${esc(f.name)}</span>
+     <button class="rm" data-i="${i}" aria-label="삭제">✕</button></div>`).join('');
+}
+$('#fileList').addEventListener('click', e => {
+  const b = e.target.closest('.rm');
+  if(!b) return;
+  files.splice(+b.dataset.i, 1);
+  extractedMode = false;
+  $('#extractedWrap').style.display = 'none';
+  renderFileList();
+  updateControls();
+});
+
+function updateControls(){
+  const isText = $('#tabText').classList.contains('active');
+  if(isText){
+    $('#extractBtn').style.display = 'none';
+    $('#analyzeBtn').style.display = '';
+    $('#stepHint').textContent = '';
+  } else {
+    if(extractedMode){
+      $('#extractBtn').style.display = 'none';
+      $('#analyzeBtn').style.display = '';
+      $('#stepHint').textContent = '추출된 지문을 확인했다면 →';
+    } else {
+      $('#extractBtn').style.display = files.length ? '' : 'none';
+      $('#analyzeBtn').style.display = 'none';
+      $('#stepHint').textContent = files.length ? '먼저 지문을 추출합니다' : '파일을 업로드하세요';
+    }
+  }
+}
+updateControls();
+
+/* ---------- Gemini API (재시도 + JSON 복구) ---------- */
+async function callGemini(parts, { json = true, temp = 0.35, maxTokens = 16384 } = {}){
+  const key = getKey();
+  if(!key){ $('#keyModal').classList.add('show'); throw new Error('NO_KEY'); }
+  const body = {
+    contents: [{ role: 'user', parts }],
+    generationConfig: {
+      temperature: temp,
+      maxOutputTokens: maxTokens,
+      ...(json ? { responseMimeType: 'application/json' } : {})
+    }
+  };
+  let lastErr;
+  for(let attempt = 0; attempt < 3; attempt++){
+    try{
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+      );
+      if(res.status === 429 || res.status === 503){
+        lastErr = new Error(res.status === 429 ? '요청 한도 초과(429) — 잠시 후 재시도' : '서버 과부하(503) — 재시도 중');
+        await sleep(2500 * (attempt + 1));
+        continue;
+      }
+      if(res.status === 400 || res.status === 403){
+        const j = await res.json().catch(() => ({}));
+        throw new Error('API 키 또는 요청 오류: ' + (j.error?.message || res.status));
+      }
+      if(!res.ok) throw new Error('API 오류 (' + res.status + ')');
+      const data = await res.json();
+      const cand = data.candidates?.[0];
+      const text = cand?.content?.parts?.map(p => p.text || '').join('') || '';
+      if(!text){
+        const reason = cand?.finishReason || data.promptFeedback?.blockReason || '응답 없음';
+        throw new Error('빈 응답 (' + reason + ')');
+      }
+      return text;
+    }catch(e){
+      if(e.message === 'NO_KEY' || /API 키/.test(e.message)) throw e;
+      lastErr = e;
+      if(attempt < 2) await sleep(1800 * (attempt + 1));
+    }
+  }
+  throw lastErr || new Error('API 호출 실패');
+}
+
+/* 잘린 JSON까지 복구 시도 */
+function parseJsonLoose(text){
+  let s = text.replace(/```json|```/g, '').trim();
+  const io = s.indexOf('{'), ia = s.indexOf('[');
+  const a = Math.min(io < 0 ? Infinity : io, ia < 0 ? Infinity : ia);
+  if(a > 0 && a < Infinity) s = s.slice(a);
+  try{ return JSON.parse(s); }catch{}
+  // 뒤에서부터 잘라가며 괄호 밸런스 맞추기
+  for(let cut = s.length; cut > s.length * 0.5; cut = s.lastIndexOf(',', cut - 1)){
+    if(cut <= 0) break;
+    let frag = s.slice(0, cut);
+    let stack = [], inStr = false, escp = false;
+    for(const ch of frag){
+      if(escp){ escp = false; continue; }
+      if(ch === '\\'){ escp = true; continue; }
+      if(ch === '"'){ inStr = !inStr; continue; }
+      if(inStr) continue;
+      if(ch === '{' || ch === '[') stack.push(ch);
+      else if(ch === '}' || ch === ']') stack.pop();
+    }
+    if(inStr) frag += '"';
+    frag += stack.reverse().map(c => c === '{' ? '}' : ']').join('');
+    try{ return JSON.parse(frag); }catch{}
+  }
+  throw new Error('JSON 파싱 실패');
+}
+
+/* ---------- 1단계: 지문 추출 (PDF/이미지 → 텍스트) ---------- */
+$('#extractBtn').onclick = async () => {
+  if(!files.length) return;
+  showLoading('지문을 읽고 있습니다...', 'OCR 및 텍스트 추출 중');
+  try{
+    const parts = files.map(f => ({ inline_data: { mime_type: f.mime, data: f.b64 } }));
+    parts.push({ text:
+`이 파일에서 영어 지문(passage) 본문만 정확하게 추출하세요.
+규칙:
+- 문제 번호, 선택지(①②③④⑤), 한글 지시문, 페이지 번호, 머리말/꼬리말은 모두 제외
+- 영어 지문 본문 문장만 원문 그대로, 오탈자 없이 추출
+- 지문이 여러 개면 각 지문 사이에 빈 줄 2개와 "--- 지문 N ---" 구분선을 넣기
+- 다른 설명 없이 추출된 텍스트만 출력` });
+    const text = await callGemini(parts, { json: false, temp: 0.1 });
+    $('#txtInput2').value = text.trim();
+    $('#extractedWrap').style.display = '';
+    extractedMode = true;
+    updateControls();
+    hideLoading();
+    toast('지문 추출 완료 — 오탈자를 확인해 주세요 ✓');
+    $('#txtInput2').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }catch(e){
+    hideLoading();
+    if(e.message !== 'NO_KEY') toast('추출 실패: ' + e.message, true);
+  }
+};
+
+/* ============================================================
+   2단계: 완전분석 — 분할 병렬 파이프라인
+   거대한 단일 호출 대신 작은 호출 여러 개로 나눠
+   응답 잘림·타임아웃 없이 빠르고 안정적으로 처리
+   ============================================================ */
+const STEPS = [
+  { id: 'split', label: '문장 분리' },
+  { id: 'sent',  label: '문장별 완전분석' },
+  { id: 'info',  label: '개요·구조·요약문' },
+  { id: 'voca',  label: '어휘·어법 정리' },
+  { id: 'exam',  label: '출제 포인트 추출' }
+];
+function initSteps(){
+  $('#stepList').innerHTML = STEPS.map(s =>
+    `<div class="step" id="st-${s.id}"><span class="ic">○</span><span>${s.label}</span><span class="pct" id="pct-${s.id}"></span></div>`).join('');
+}
+function setStep(id, state, extra){
+  const el = $('#st-' + id); if(!el) return;
+  el.className = 'step ' + state;
+  el.querySelector('.ic').textContent = state === 'done' ? '✓' : state === 'run' ? '…' : state === 'fail' ? '✕' : '○';
+  if(extra !== undefined) $('#pct-' + id).textContent = extra;
+}
+const chunkArr = (arr, n) => { const o = []; for(let i = 0; i < arr.length; i += n) o.push(arr.slice(i, i + n)); return o; };
+const lvlLine = () => `대상: 한국 ${levelName()} 학생. 모든 해설은 자연스러운 한국어로 작성.
+【이 학생을 위한 분석 지침 — 반드시 준수】 ${levelProfile()}
+【분석의 두 관점 — 반드시 균형있게 반영】
+① 학생 관점(이해): 이 수준의 학생이 지문을 정확히 이해하기 위해 반드시 알아야 할 것 — 해석의 핵심, 걸림돌이 되는 구문·어휘, 논리 흐름을 짚어줄 것.
+② 교사 관점(출제): 실제 시험 출제자가 이 지문에서 문제로 만들 지점 — 변별력 있는 어법·어휘·빈칸·서술형 포인트를 출제자의 눈으로 예측할 것.
+두 관점이 겹치는 곳(학생이 어려워하는 동시에 출제자가 노리는 지점)이 가장 중요하니 우선순위를 둘 것.`;
+
+/* (0) 문장 분리 */
+async function splitSentences(passage){
+  const raw = await callGemini([{ text:
+`아래 영어 지문을 문장 단위로 나눠 JSON 배열로만 출력하세요.
+규칙: 원문 철자·구두점 그대로(수정 금지), 순서 유지, 인용문/약어 내부 마침표에서 자르지 말 것.
+(A), (B), (C) 같은 단락 표기가 있으면 해당 단락 첫 문장 앞에 붙여 유지할 것.
+출력 형식: ["문장1","문장2",...] — 문자열 배열만, 다른 텍스트 금지.
+
+지문:
+${passage}` }], { json: true, temp: 0, maxTokens: 8192 });
+  const arr = parseJsonLoose(raw);
+  if(!Array.isArray(arr) || !arr.length) throw new Error('문장 분리 실패');
+  return arr
+    .map(x => typeof x === 'string' ? x : (x && (x.sentence || x.en || x.text)) || '')
+    .map(s => String(s).trim())
+    .filter(Boolean)
+    .map((en, i) => ({ no: i + 1, en }));
+}
+
+/* (1) 문장별 분석 — 7문장씩 배치 */
+async function analyzeBatch(passage, batch, total){
+  const raw = await callGemini([{ text:
+`당신은 한국 ${levelName()} 영어 시험을 완벽히 아는 20년 경력 강사입니다. ${lvlLine()}
+
+【전체 지문 — 맥락 파악용】
+${passage}
+
+【분석 대상】 전체 ${total}문장 중 아래 문장들만 분석해 JSON 배열로만 출력 (마크다운 금지):
+${batch.map(s => `${s.no}. ${s.en}`).join('\n')}
+
+출력 스키마:
+[{
+ "no": 문장번호(숫자),
+ "chunk": "의미 단위 직독직해 — 영어구 (한글해석) / 영어구 (한글해석) / ... 슬래시(/) 구분",
+ "ko": "자연스러운 우리말 해석",
+ "syntax": "[학생이 알아야 할 이해 포인트] 문장 뼈대(S/V/O/C), 수식 구조, 생략, 도치 등 — 학생이 이 문장을 정확히 이해하려면 꼭 알아야 하는 것. 없으면 \\"\\"",
+ "grammar": "이 문장의 어법 포인트와 짧은 설명. 없으면 \\"\\"",
+ "exam_note": "[교사가 출제할 지점] 이 문장이 시험에 나온다면 어떻게 출제될지 — 어법 변형/빈칸/서술형 영작 후보 등을 출제자 관점에서 구체적으로. 출제 가능성 낮으면 \\"\\"",
+ "importance": 1
+}]
+importance: 1(일반) 2(중요) 3(핵심 주제문 수준·학생 이해와 출제가 모두 걸리는 최중요 문장)` }], { json: true, temp: 0.3, maxTokens: 16384 });
+  const arr = parseJsonLoose(raw);
+  if(!Array.isArray(arr)) throw new Error('문장 분석 응답 형식 오류');
+  return arr;
+}
+
+/* (2) 개요·구조·요약문·배경지식 */
+async function callInfo(passage){
+  const raw = await callGemini([{ text:
+`당신은 한국 ${levelName()} 영어 전문 강사입니다. ${lvlLine()}
+아래 지문을 분석해 다음 JSON만 출력 (마크다운 금지):
+{
+ "passage_info": {"title_en":"영어 제목","title_ko":"한글 제목","genre":"글의 종류","topic_ko":"주제(한국어 명사구)","topic_en":"주제(영어 명사구)","main_idea_ko":"요지/주장(한국어 한 문장)","main_idea_en":"요지(영어 한 문장)","one_line":"학생 눈높이 한 줄 요약","tone":"어조"},
+ "structure": {"development":"전개 방식(통념-반박/문제-해결/예시 나열 등)","flow":[{"label":"도입","range":"1~2번 문장","summary":"역할·내용 요약(한국어)"}]},
+ "summary_fill": {"text":"지문 요약문(영어 1~2문장). 핵심어 2개는 반드시 [[단어]] 형태로 표시","hints":["각 [[단어]]의 한국어 힌트(첫 글자 포함)"]},
+ "background": {"knowledge":"배경지식(한국어 3~5문장, 흥미롭게)","related":"연관 주제(쉼표 구분)"}
+}
+
+지문:
+${passage}` }], { json: true, temp: 0.35, maxTokens: 8192 });
+  return parseJsonLoose(raw);
+}
+
+/* (3) 어휘·어법 */
+async function callVoca(passage){
+  const raw = await callGemini([{ text:
+`당신은 한국 ${levelName()} 영어 전문 강사입니다. ${lvlLine()}
+아래 지문의 어휘와 어법을 정리해 다음 JSON만 출력 (마크다운 금지):
+{
+ "vocabulary": [{"word":"단어/숙어","pos":"품사","meaning":"뜻","syn":"유의어 1~3개(영어, 쉼표, 없으면 \\"\\")","ant":"반의어(없으면 \\"\\")","note":"파생어·다의어·시험 팁(없으면 \\"\\")"}],
+ "grammar_summary": [{"title":"어법 포인트 제목","ref":"몇 번째 문장인지(예: 3번 문장)","explain":"핵심 설명(한국어 2~3문장, ${levelName()} 수준)","transform":"시험 변형 예시 — 원형: ... → 오답 변형: ... (틀린 이유). 없으면 \\"\\""}]
+}
+vocabulary는 ${levelName()} 학생이 모를 만한 것 8~15개, grammar_summary는 3~6개.
+
+지문(문장 번호 포함):
+${passage}` }], { json: true, temp: 0.35, maxTokens: 12288 });
+  return parseJsonLoose(raw);
+}
+
+/* (4) 출제 포인트 */
+async function callExam(passage){
+  const isSAT = levelCat === '수능·모의고사';
+  const signalSchema = isSAT ? `
+  "signals": [{"type":"문제 유형(주제/제목/빈칸/순서/삽입/함의 등)","signal":"이 지문에서 정답으로 직행하게 해주는 시그널 — 해당 영어 표현을 그대로 인용","how":"그 시그널을 빠르게 포착하고 활용하는 방법(초 단위 스캐닝 요령)"}],` : '';
+  const signalRule = isSAT ? '\nsignals는 3~5개 — 이 학생 등급에 맞는 풀이 속도 전략을 반영해 가장 실전적인 것부터.' : '';
+  const raw = await callGemini([{ text:
+`당신은 한국 ${levelName()} 영어 시험 출제 경향을 완벽히 아는 강사입니다. ${lvlLine()}
+아래 지문에서 시험에 출제될 부분을 예측해 다음 JSON만 출력 (마크다운 금지):
+{
+ "exam_points": {${signalSchema}
+  "blank": [{"target":"빈칸으로 뚫릴 표현(영어)","why":"주제와의 연결 — 왜 여기가 뚫리는지","tip":"빈칸 추론 접근법"}],
+  "grammar_transform": [{"original":"원문 표현","wrong":"예상 오답 변형","point":"묻는 어법 개념과 판별법"}],
+  "vocab_transform": [{"original":"원문 어휘","wrong":"문맥상 어색한 교체 예상 어휘","why":"왜 어색해지는지"}],
+  "flow": {"connectors":"순서/삽입 문제 단서가 되는 연결사·지시어·대명사 정리(한국어)","cut":"글이 잘릴 가능성 높은 지점과 이유"},
+  "title_topic": {"likely_answer":"제목/주제 정답 방향","traps":"매력적 오답 함정 1~2개와 이유"},
+  "descriptive": [{"q":"서술형 예상 문제(한국어 발문, ${levelName()} 스타일)","answer":"모범답안","grading":"채점 포인트/감점 요소"}]
+ }
+}
+blank·grammar_transform·vocab_transform 각 2~4개, descriptive 2~3개.${signalRule}
+
+지문:
+${passage}` }], { json: true, temp: 0.4, maxTokens: 12288 });
+  return parseJsonLoose(raw);
+}
+
+$('#analyzeBtn').onclick = async () => {
+  const isText = $('#tabText').classList.contains('active');
+  const passage = (isText ? $('#txtInput').value : $('#txtInput2').value).trim();
+  if(!passage){ toast('지문을 입력해 주세요', true); return; }
+  if(passage.length < 60){ toast('지문이 너무 짧습니다 — 전체 지문을 입력해 주세요', true); return; }
+  if(!getKey()){ $("#keyModal").classList.add("show"); return; }
+
+  showLoading('지문을 완전분석하고 있습니다...', '여러 분석을 동시에 진행합니다');
+  initSteps();
+
+  try{
+    /* 0단계: 문장 분리 */
+    setStep('split', 'run');
+    const sents = await splitSentences(passage);
+    setStep('split', 'done', sents.length + '문장');
+    const numbered = sents.map(s => `${s.no}. ${s.en}`).join('\n');
+
+    /* 1~4단계: 병렬 실행 */
+    setStep('sent', 'run', '0/' + sents.length);
+    setStep('info', 'run'); setStep('voca', 'run'); setStep('exam', 'run');
+
+    const sentTask = (async () => {
+      const out = [];
+      for(const b of chunkArr(sents, 7)){
+        const res = await analyzeBatch(passage, b, sents.length);
+        for(const r of res){
+          const src = sents.find(s => s.no === (r.no|0));
+          if(src) out.push({ ...r, no: src.no, en: src.en });
+        }
+        setStep('sent', 'run', Math.min(out.length, sents.length) + '/' + sents.length);
+      }
+      out.sort((a, b) => a.no - b.no);
+      /* 누락 문장 보정: 분석 없이라도 원문은 표시 */
+      for(const s of sents){
+        if(!out.some(x => x.no === s.no))
+          out.push({ no: s.no, en: s.en, chunk: '', ko: '', syntax: '', grammar: '', exam_note: '', importance: 1 });
+      }
+      out.sort((a, b) => a.no - b.no);
+      setStep('sent', 'done', sents.length + '/' + sents.length);
+      return out;
+    })();
+
+    const infoTask = callInfo(numbered).then(r => { setStep('info', 'done'); return r; });
+    const vocaTask = callVoca(numbered).then(r => { setStep('voca', 'done'); return r; });
+    const examTask = callExam(numbered).then(r => { setStep('exam', 'done'); return r; });
+
+    const [sentences, info, voca, exam] = await Promise.all([sentTask, infoTask, vocaTask, examTask]);
+
+    analysis = {
+      passage_info: info.passage_info || {},
+      structure: info.structure || {},
+      summary_fill: info.summary_fill || {},
+      background: info.background || {},
+      vocabulary: voca.vocabulary || [],
+      grammar_summary: voca.grammar_summary || [],
+      exam_points: exam.exam_points || exam || {},
+      sentences
+    };
+
+    let renderedOk = false;
+    try{
+      renderDoc(analysis);
+      renderedOk = $('#doc').children.length > 0;
+    }catch(re){
+      console.error('[렌더링 오류]', re);
+      renderedOk = false;
+    }
+    hideLoading();
+    if(renderedOk){
+      /* 렌더링 성공을 확인한 뒤에만 입력 화면을 접는다 (빈 화면 방지) */
+      $('.hero').style.display = 'none';
+      $('.panel').style.display = 'none';
+      const rz = $('#result');
+      rz.style.display = 'block';
+      rz.style.visibility = 'visible';
+      rz.style.opacity = '1';
+      /* 결과 위치로 확실히 이동 */
+      window.scrollTo(0, 0);
+      setTimeout(() => { try{ rz.scrollIntoView({ block: 'start' }); }catch(_){} }, 60);
+      toast('완전분석 완료 — 아래 분석지를 바로 수정할 수 있고, 위 빨간 버튼으로 HTML 내보내기 🎉');
+    } else {
+      /* 실패 시 입력 화면 유지 — 절대 빈 화면이 되지 않도록 */
+      $('.hero').style.display = '';
+      $('.panel').style.display = '';
+      $('#result').style.display = 'none';
+      toast('분석 결과를 표시하지 못했습니다. F12 콘솔을 확인하거나 다시 시도해 주세요.', true);
+    }
+  }catch(e){
+    hideLoading();
+    console.error('[Zoops 분석 오류]', e);
+    /* 어떤 단계에서 실패하든 입력 화면은 항상 살아 있어야 한다 */
+    $('.hero').style.display = '';
+    $('.panel').style.display = '';
+    $('#result').style.display = 'none';
+    if(e.message !== 'NO_KEY') toast('분석 실패: ' + e.message, true);
+  }
+};
+
+/* ---------- 렌더링 ---------- */
+function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function stars(n){ return '★'.repeat(Math.max(0, Math.min(3, n|0))); }
+
+function renderDoc(a){
+  const p = a.passage_info || {};
+  let secNo = 0;
+  const sn = () => String(++secNo).padStart(2, '0');
+  let h = '';
+
+  /* 문서 머리 */
+  h += `<div class="doc-head">
+    <div style="flex:1;min-width:200px">
+      <div class="brand">ZOOPSBOOKS 완전분석</div>
+      <h2>${esc(p.title_ko || '지문 분석')} <span style="font-family:var(--serif);font-weight:600;font-style:italic;font-size:16px;color:var(--ink-soft)">— ${esc(p.title_en || '')}</span></h2>
+    </div>
+    <div class="meta">${esc(levelName())}</div>
+  </div>`;
+
+  /* 01 한눈에 보기 */
+  h += `<section class="sec"><h3><span class="no">${sn()}.</span>지문 한눈에 보기</h3>
+    <div class="grid-info">
+      <div class="k">글의 종류</div><div class="v">${esc(p.genre)}　·　어조: ${esc(p.tone)}</div>
+      <div class="k">주제</div><div class="v">${esc(p.topic_ko)}<br><span style="font-family:var(--serif);color:var(--ink-soft);font-size:13px">${esc(p.topic_en)}</span></div>
+      <div class="k">요지·주장</div><div class="v"><b>${esc(p.main_idea_ko)}</b><br><span style="font-family:var(--serif);color:var(--ink-soft);font-size:13px">${esc(p.main_idea_en)}</span></div>
+      <div class="k">한 줄 정리</div><div class="v">💡 ${esc(p.one_line)}</div>
+    </div></section>`;
+
+  /* 02 원문 */
+  const sents = a.sentences || [];
+  h += `<section class="sec"><h3><span class="no">${sn()}.</span>원문 지문 <span style="font-size:12px;font-weight:600;color:var(--ink-faint)">— 노란 형광펜 = 핵심 문장</span></h3>
+    <div class="passage">${sents.map(s =>
+      `<span class="${(s.importance|0) >= 3 ? 'key' : ''}"><span class="sn">${s.no}</span>${esc(s.en)}</span> `).join('')}
+    </div></section>`;
+
+  /* 03 문장별 완전분석 */
+  h += `<section class="sec"><h3><span class="no">${sn()}.</span>문장별 완전분석</h3>`;
+  for(const s of sents){
+    const chunked = esc(s.chunk).replace(/\//g, '<span class="sl">/</span>');
+    h += `<div class="sent">
+      <div class="sent-top">
+        <div class="sent-no">${s.no}</div>
+        <div class="sent-en">${esc(s.en)}</div>
+        ${(s.importance|0) >= 2 ? `<div class="sent-star">${stars(s.importance)}</div>` : ''}
+      </div>
+      <div class="sent-body">
+        <div class="row"><span class="tag chunk">직독직해</span><span class="chunked">${chunked}</span></div>
+        <div class="row"><span class="tag ko">해석</span><span>${esc(s.ko)}</span></div>
+        ${s.syntax ? `<div class="row"><span class="tag syn">구문</span><span class="note-line">${esc(s.syntax)}</span></div>` : ''}
+        ${s.grammar ? `<div class="row"><span class="tag syn">어법</span><span class="note-line">${esc(s.grammar)}</span></div>` : ''}
+        ${s.exam_note ? `<div class="row"><span class="tag exam">출제</span><span><span class="exam-line">${esc(s.exam_note)}</span></span></div>` : ''}
+      </div>
+    </div>`;
+  }
+  h += `</section>`;
+
+  /* 04 글의 구조 */
+  const st = a.structure || {};
+  h += `<section class="sec"><h3><span class="no">${sn()}.</span>글의 구조와 흐름</h3>
+    <div class="dev-type">전개 방식 · ${esc(st.development)}</div>
+    <div class="flow">${(st.flow || []).map((f, i) =>
+      `<div class="flow-item"><div class="flow-dot">${i+1}</div>
+       <div><div class="role">${esc(f.label)}<span class="rng">${esc(f.range)}</span></div>
+       <div class="desc">${esc(f.summary)}</div></div></div>`).join('')}
+    </div></section>`;
+
+  /* 05 핵심 어휘 */
+  h += `<section class="sec"><h3><span class="no">${sn()}.</span>핵심 어휘 정리</h3>
+    <table class="voca"><thead><tr><th style="width:22%">단어 / 숙어</th><th style="width:8%">품사</th><th style="width:24%">뜻</th><th style="width:23%">유의어 · 반의어</th><th>시험 포인트</th></tr></thead><tbody>
+    ${(a.vocabulary || []).map(v => `<tr>
+      <td class="w">${esc(v.word)}</td><td>${esc(v.pos)}</td><td>${esc(v.meaning)}</td>
+      <td>${v.syn ? `<span class="syn">≒ ${esc(v.syn)}</span>` : ''}${v.syn && v.ant ? '<br>' : ''}${v.ant ? `<span class="ant">↔ ${esc(v.ant)}</span>` : ''}</td>
+      <td class="ex">${esc(v.note)}</td></tr>`).join('')}
+    </tbody></table></section>`;
+
+  /* 06 어법 총정리 */
+  h += `<section class="sec"><h3><span class="no">${sn()}.</span>어법 총정리</h3>
+    ${(a.grammar_summary || []).map(g => `<div class="gram">
+      <h4>${esc(g.title)}<span class="ref">${esc(g.ref)}</span></h4>
+      <p>${esc(g.explain)}</p>
+      ${g.transform ? `<div class="tf"><span class="lbl">변형 주의</span>${esc(g.transform)}</div>` : ''}
+    </div>`).join('')}</section>`;
+
+  /* 07 출제 포인트 */
+  const ep = a.exam_points || {};
+  h += `<section class="sec exam"><h3><span class="no">${sn()}.</span>🎯 시험 출제 포인트 총정리</h3>`;
+  if((ep.signals || []).length){
+    h += `<div class="exam-block" style="border-color:var(--blue)"><h4 style="background:var(--blue)">⚡ 정답 직행 시그널 — 빠른 풀이의 핵심</h4><div class="inner">
+      ${ep.signals.map(s => `<div class="exam-item"><span class="t">[${esc(s.type)}]</span> <span class="en">"${esc(s.signal)}"</span><span class="why">⏱ ${esc(s.how)}</span></div>`).join('')}</div></div>`;
+  }
+  if((ep.blank || []).length){
+    h += `<div class="exam-block"><h4>① 빈칸 추론 — 여기가 뚫린다</h4><div class="inner">
+      ${ep.blank.map(b => `<div class="exam-item"><span class="t en">"${esc(b.target)}"</span><span class="why">${esc(b.why)}<br>💡 ${esc(b.tip)}</span></div>`).join('')}</div></div>`;
+  }
+  if((ep.grammar_transform || []).length){
+    h += `<div class="exam-block"><h4>② 어법 변형 — 이렇게 바뀌어 나온다</h4><div class="inner">
+      ${ep.grammar_transform.map(g => `<div class="exam-item"><span class="en"><span class="ans">${esc(g.original)}</span> → <span class="wrong">${esc(g.wrong)}</span></span><span class="why">${esc(g.point)}</span></div>`).join('')}</div></div>`;
+  }
+  if((ep.vocab_transform || []).length){
+    h += `<div class="exam-block"><h4>③ 어휘 변형 — 문맥상 낱말 쓰임</h4><div class="inner">
+      ${ep.vocab_transform.map(v => `<div class="exam-item"><span class="en"><span class="ans">${esc(v.original)}</span> → <span class="wrong">${esc(v.wrong)}</span></span><span class="why">${esc(v.why)}</span></div>`).join('')}</div></div>`;
+  }
+  if(ep.flow){
+    h += `<div class="exam-block"><h4>④ 순서 · 문장삽입 단서</h4><div class="inner">
+      <div class="exam-item"><span class="t">연결 단서</span><span class="why">${esc(ep.flow.connectors)}</span></div>
+      <div class="exam-item"><span class="t">절단 예상 지점</span><span class="why">${esc(ep.flow.cut)}</span></div></div></div>`;
+  }
+  if(ep.title_topic){
+    h += `<div class="exam-block"><h4>⑤ 제목 · 주제 문제</h4><div class="inner">
+      <div class="exam-item"><span class="t">정답 방향</span><span class="why">${esc(ep.title_topic.likely_answer)}</span></div>
+      <div class="exam-item"><span class="t">오답 함정</span><span class="why">${esc(ep.title_topic.traps)}</span></div></div></div>`;
+  }
+  if((ep.descriptive || []).length){
+    h += `<div class="exam-block"><h4>⑥ 서술형 예상 문제</h4><div class="inner" style="gap:0">
+      ${ep.descriptive.map((d, i) => `<div class="desc-q" style="border:none;background:none;padding:8px 0">
+        <div class="q"><span class="qn">Q${i+1}.</span>${esc(d.q)}</div>
+        <div class="a"><span class="lbl">모범답안</span>${esc(d.answer)}</div>
+        <div class="g"><span class="lbl">채점 포인트</span>${esc(d.grading)}</div></div>`).join('')}</div></div>`;
+  }
+  h += `</section>`;
+
+  /* 08 요약문 빈칸 훈련 */
+  const sf = a.summary_fill || {};
+  if(sf.text){
+    let bi = 0;
+    const hints = sf.hints || [];
+    const sumHtml = esc(sf.text).replace(/\[\[(.+?)\]\]/g, (_, w) => {
+      const hint = hints[bi] ? `<span class="bh">(${esc(hints[bi])})</span>` : '';
+      bi++;
+      return `<span class="blank" data-ans="${esc(w)}" tabindex="0" role="button" aria-label="빈칸 정답 보기">${esc(w)}</span>${hint}`;
+    });
+    h += `<section class="sec"><h3><span class="no">${sn()}.</span>요약문 빈칸 훈련</h3>
+      <div class="summary-box">${sumHtml}</div>
+      <div class="summary-tip">빈칸을 클릭하면 정답이 나타납니다 · 인쇄 시 빈칸으로 출력되어 학습지로 바로 사용 가능</div></section>`;
+  }
+
+  /* 09 배경지식 */
+  const bg = a.background || {};
+  h += `<section class="sec"><h3><span class="no">${sn()}.</span>배경지식 넓히기</h3>
+    <div class="bg-box">${esc(bg.knowledge)}
+    ${bg.related ? `<div class="rel">🔗 연관 주제: ${esc(bg.related)}</div>` : ''}</div></section>`;
+
+  h += `<div class="doc-foot"><span>ZoopsBooks 지문 완전분석</span></div>`;
+
+  $('#doc').innerHTML = h;
+
+  /* 빈칸 클릭 토글 */
+  document.querySelectorAll('.summary-box .blank').forEach(b => {
+    const toggle = () => b.classList.toggle('reveal');
+    b.onclick = toggle;
+    b.onkeydown = e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } };
+  });
+
+  /* 편집 바 설정 실패해도 분석지 내용은 반드시 남도록 격리 */
+  try{ initLayoutBar(); }catch(err){ console.error('[편집 바 초기화 오류]', err); }
+}
+
+/* ============================================================
+   프리뷰 편집 · 레이아웃 조절 (종이 절약)
+   ============================================================ */
+let fontScale = 100;
+function initLayoutBar(){
+  const d = $('#doc');
+  /* 새 분석마다 초기화 */
+  fontScale = 100;
+  editMode = false;
+  d.style.zoom = '';
+  d.classList.remove('compact', 'editing');
+  d.removeAttribute('contenteditable');
+  $('#fsVal').textContent = '100%';
+  $('#editToggle').classList.remove('on');
+  $('#compactToggle').classList.remove('on');
+  /* 섹션 칩 생성 — 클릭으로 표시/숨김 (숨긴 섹션은 인쇄·내보내기에서 제외) */
+  const secs = [...document.querySelectorAll('#doc .sec')];
+  $('#secChips').innerHTML = secs.map((s, i) => {
+    const t = s.querySelector('h3')?.textContent.replace(/^\d+\.\s*/, '').replace(/—.*$/, '').trim().slice(0, 12) || ('섹션 ' + (i+1));
+    return `<button class="mini" data-sec="${i}">${esc(t)}</button>`;
+  }).join('');
+}
+$('#secChips').addEventListener('click', e => {
+  const b = e.target.closest('button[data-sec]');
+  if(!b) return;
+  const sec = document.querySelectorAll('#doc .sec')[+b.dataset.sec];
+  if(!sec) return;
+  const hidden = sec.classList.toggle('hidden');
+  b.classList.toggle('off', hidden);
+});
+let editMode = false;
+$('#editToggle').onclick = () => {
+  editMode = !editMode;
+  const d = $('#doc');
+  if(editMode) d.setAttribute('contenteditable', 'true');
+  else d.removeAttribute('contenteditable');
+  d.classList.toggle('editing', editMode);
+  $('#editToggle').classList.toggle('on', editMode);
+  toast(editMode ? '수정 모드 — 분석지 글자를 직접 고칠 수 있습니다 ✏️' : '수정 모드 종료 — 변경 내용은 인쇄·내보내기에 그대로 반영됩니다');
+};
+function applyFontScale(){
+  fontScale = Math.max(80, Math.min(115, fontScale));
+  $('#doc').style.zoom = fontScale === 100 ? '' : (fontScale / 100);
+  $('#fsVal').textContent = fontScale + '%';
+}
+$('#fsDown').onclick = () => { fontScale -= 5; applyFontScale(); };
+$('#fsUp').onclick = () => { fontScale += 5; applyFontScale(); };
+$('#compactToggle').onclick = () => {
+  const on = $('#doc').classList.toggle('compact');
+  $('#compactToggle').classList.toggle('on', on);
+};
+
+/* ---------- 요약문 정답 일괄 토글 ---------- */
+let ansShown = false;
+$('#ansToggle').onclick = () => {
+  ansShown = !ansShown;
+  document.querySelectorAll('.summary-box .blank').forEach(b => b.classList.toggle('reveal', ansShown));
+  $('#ansToggle').textContent = ansShown ? '🙈 요약문 정답 숨기기' : '👁️ 요약문 정답 보기';
+};
+
+/* ---------- HTML 문서로 내보내기 (프리뷰에서 수정한 내용 그대로 반영) ---------- */
+function exportHtml(){
+  if(!analysis) return;
+  const title = (analysis.passage_info?.title_ko || '지문분석');
+  const styles = document.querySelector('style').textContent;
+  /* 편집된 현재 DOM을 복제 → 편집 속성 제거, 숨긴 섹션 삭제 (종이 절약) */
+  const clone = $('#doc').cloneNode(true);
+  clone.removeAttribute('contenteditable');
+  clone.classList.remove('editing');
+  clone.querySelectorAll('.sec.hidden').forEach(el => el.remove());
+  if(fontScale !== 100) clone.style.zoom = fontScale / 100;
+  const docHtml = clone.outerHTML;
+  const out = `<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZoopsBooks 완전분석 — ${esc(title)}</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>${styles}
+main{max-width:980px;margin:0 auto;padding:36px 24px}
+@media print{ main{padding:0} .doc{border:none;box-shadow:none;padding:0} }</style>
+</head><body><main>${docHtml}</main>
+<script>document.querySelectorAll('.summary-box .blank').forEach(b=>{b.onclick=()=>b.classList.toggle('reveal')});<\/script>
+</body></html>`;
+  const blob = new Blob([out], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `ZoopsBooks_완전분석_${title.replace(/[\\/:*?"<>|\s]+/g, '_')}.html`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('HTML 파일 저장 완료 — 크롬에서 열어 인쇄(Ctrl+P) → PDF 저장 ✓');
+}
+$('#dlBtn').onclick = exportHtml;
+
+/* ---------- 새 분석 ---------- */
+$('#newBtn').onclick = () => {
+  $('#result').style.display = 'none';
+  $('.hero').style.display = '';
+  $('.panel').style.display = '';
+  analysis = null;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+/* ---------- 로딩 ---------- */
+function showLoading(msg, sub){
+  $('#loadMsg').textContent = msg;
+  $('#loadSub').textContent = sub || '';
+  $('#loading').classList.add('show');
+}
+function hideLoading(){ $('#loading').classList.remove('show'); }
+
+/* ---------- 전역 안전망 ---------- */
+/* 어떤 예기치 못한 오류가 나도 흰 화면(입력·결과 모두 사라짐)이 되지 않도록 복구 */
+function ensureNotBlank(){
+  const resultShown = $('#result').style.display !== 'none' && $('#doc').children.length > 0;
+  if(!resultShown){
+    $('.hero').style.display = '';
+    $('.panel').style.display = '';
+  }
+}
+window.addEventListener('error', e => {
+  console.error('[전역 오류]', e.error || e.message);
+  hideLoading();
+  ensureNotBlank();
+});
+window.addEventListener('unhandledrejection', e => {
+  console.error('[처리되지 않은 거부]', e.reason);
+  hideLoading();
+  ensureNotBlank();
+});
+
+/* file:// 로 직접 열었을 때 폰트/저장 제약 안내 (앱은 정상 작동) */
+if(location.protocol === 'file:'){
+  setTimeout(() => toast('파일을 직접 열어 실행 중입니다. 정상 작동하지만, 화면이 비면 새로고침(F5) 후 다시 시도하세요.'), 800);
+}
+</script>
+</body>
+</html>
