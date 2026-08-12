@@ -605,8 +605,8 @@ async function callGemini(parts, { json = true, temp = 0.35, maxTokens = 16384 }
   for(let attempt = 0; attempt < 3; attempt++){
     try{
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`,
-        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify(body) }
       );
       if(res.status === 429 || res.status === 503){
         lastErr = new Error(res.status === 429 ? '요청 한도 초과(429) — 잠시 후 재시도' : '서버 과부하(503) — 재시도 중');
